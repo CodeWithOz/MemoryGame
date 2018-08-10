@@ -1,7 +1,24 @@
 /*
  * Create a list that holds all of your cards
  */
-
+let cards = [
+  'diamond',
+  'paper-plane-o',
+  'anchor',
+  'bicycle',
+  'cube',
+  'leaf',
+  'bomb',
+  'diamond',
+  'paper-plane-o',
+  'anchor',
+  'bicycle',
+  'cube',
+  'leaf',
+  'bomb',
+  'bolt',
+  'bolt'
+];
 
 /*
  * Display the cards on the page
@@ -9,6 +26,22 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+// shuffle cards
+cards = shuffle(cards);
+
+const deck = document.querySelector('.deck');
+const tempDeck = document.createDocumentFragment();
+
+// create card HTML for each card
+cards.forEach(card => {
+  const li = document.createElement('li');
+  li.classList.add('card');
+  li.innerHTML = `<i class="fa fa-${card}"></i>`;
+  tempDeck.appendChild(li);
+});
+
+// add cards to deck
+deck.appendChild(tempDeck);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
