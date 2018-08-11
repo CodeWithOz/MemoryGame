@@ -36,6 +36,10 @@ const tempDeck = document.createDocumentFragment();
 cards.forEach(card => {
   const li = document.createElement('li');
   li.classList.add('card');
+
+  // identify card type with data attribute
+  li.dataset.card = card;
+
   li.innerHTML = `<i class="fa fa-${card}"></i>`;
   tempDeck.appendChild(li);
 });
@@ -58,14 +62,74 @@ function shuffle(array) {
     return array;
 }
 
+/**** Gameplay *****/
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+let openCards = [], matchedCards = [];
+
+// ensure new cards cannot be flipped while 2 cards are already open
+let checkingForMatch = false;
+
+deck.addEventListener('click', event => {
+  const { target } = event;
+
+  // exit if target is not an LI
+  if (target.tagName !== 'LI') return;
+
+  // exit if 2 cards are currently being evaluated
+  if (checkingForMatch) return;
+
+  // exit if clicked card is already matched
+  if (target.classList.contains('match')) return;
+
+  // TODO: increment and display move counter
+  // increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+
+  // display the card's symbol (put this functionality in another function that you call from this one)
+  target.classList.add('open', 'show');
+
+  // add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+  openCards.push(target);
+
+  // exit if no other card is open and unmatched
+  if (openCards.length < 2) return;
+
+  checkingForMatch = true;
+
+  // exit if the same card was clicked
+  if (openCards[0] === openCards[1]) {
+    openCards.pop();
+    checkingForMatch = false;
+    return;
+  }
+
+  if (openCards[0].dataset.card === openCards[1].dataset.card) {
+    openCards.forEach(cardElement => {
+      // lock card in open position
+      cardElement.classList.remove('open', 'show');
+      cardElement.classList.add('match');
+
+      // record that this card has matched
+      matchedCards.push(cardElement);
+    });
+
+    // prepare for next match
+    openCards = [];
+    checkingForMatch = false;
+
+    // if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+    if (matchedCards.length > 15) console.log('You won!');
+  } else {
+    // if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+    setTimeout(() => {
+      openCards.forEach(cardElement => {
+        cardElement.classList.remove('open', 'show');
+      });
+      openCards = [];
+      matchedCards.forEach(cardElement => {
+        cardElement.classList.remove('match');
+      });
+      matchedCards = [];
+      checkingForMatch = false;
+    }, 1000);
+  }
+});
