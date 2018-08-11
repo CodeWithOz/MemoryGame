@@ -64,10 +64,12 @@ function shuffle(array) {
 
 /**** Gameplay *****/
 
-let openCards = [], matchedCards = [];
+let openCards = [], matchedCards = [], moves = 0;
 
 // ensure new cards cannot be flipped while 2 cards are already open
 let checkingForMatch = false;
+
+const moveCounter = document.querySelector('.moves');
 
 deck.addEventListener('click', event => {
   const { target } = event;
@@ -81,8 +83,12 @@ deck.addEventListener('click', event => {
   // exit if clicked card is already matched
   if (target.classList.contains('match')) return;
 
-  // TODO: increment and display move counter
-  // increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+  // exit if the same card was clicked
+  if (openCards.length === 1 && openCards[0] === target) return;
+
+  // increment and display move counter
+  moves++;
+  moveCounter.textContent = moves;
 
   // display the card's symbol (put this functionality in another function that you call from this one)
   target.classList.add('open', 'show');
@@ -95,12 +101,7 @@ deck.addEventListener('click', event => {
 
   checkingForMatch = true;
 
-  // exit if the same card was clicked
-  if (openCards[0] === openCards[1]) {
-    openCards.pop();
-    checkingForMatch = false;
-    return;
-  }
+  // TODO: update star count if necessary
 
   if (openCards[0].dataset.card === openCards[1].dataset.card) {
     openCards.forEach(cardElement => {
