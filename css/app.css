@@ -92,6 +92,9 @@ h1 {
 }
 
 .score-panel .stars {
+    /* player starts with 3 gold stars */
+    color: gold;
+
     margin: 0;
     padding: 0;
     display: inline-block;

@@ -69,7 +69,15 @@ let openCards = [], matchedCards = [], moves = 0;
 // ensure new cards cannot be flipped while 2 cards are already open
 let checkingForMatch = false;
 
-const moveCounter = document.querySelector('.moves');
+const moveCounter = document.querySelector('.moves'),
+  stars = document.querySelector('.stars'),
+  // get the individual stars
+  [ bronze, silver, gold ] = stars.children,
+  // function for changing stars
+  changeStar = (color, star) => {
+    stars.style.color = color;
+    star.style.color = window.getComputedStyle(stars).backgroundColor;
+  };
 
 deck.addEventListener('click', event => {
   const { target } = event;
@@ -89,6 +97,17 @@ deck.addEventListener('click', event => {
   // increment and display move counter
   moves++;
   moveCounter.textContent = moves;
+
+  // reduce stars if necessary
+  // an individual star is hidden by setting its color equal to the
+  // parent container's background color
+  if (moves > 74) {
+    // bronze
+    changeStar('#A57164', silver);
+  } else if (moves > 56) {
+    // silver
+    changeStar('silver', gold);
+  }
 
   // display the card's symbol (put this functionality in another function that you call from this one)
   target.classList.add('open', 'show');
