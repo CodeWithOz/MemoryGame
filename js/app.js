@@ -1,3 +1,23 @@
+// String.prototype.padStart() polyfill
+// https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+if (!String.prototype.padStart) {
+    String.prototype.padStart = function padStart(targetLength,padString) {
+        targetLength = targetLength>>0; //truncate if number or convert non-number to 0;
+        padString = String((typeof padString !== 'undefined' ? padString : ' '));
+        if (this.length > targetLength) {
+            return String(this);
+        }
+        else {
+            targetLength = targetLength-this.length;
+            if (targetLength > padString.length) {
+                padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
+            }
+            return padString.slice(0,targetLength) + String(this);
+        }
+    };
+}
+
 /*
  * Create a list that holds all of your cards
  */
@@ -79,7 +99,35 @@ const moveCounter = document.querySelector('.moves'),
     star.style.color = window.getComputedStyle(stars).backgroundColor;
   };
 
+// timer
+let start;
+const hour = document.querySelector('.hour'),
+  minute = document.querySelector('.minute'),
+  second = document.querySelector('.second'),
+  updateTimer = () => {
+    let now = Math.floor(Date.now() / 1000),
+      // seconds since start
+      diff = now - start,
+      hours = Math.floor(diff / 3600),
+      // save remainder of this division
+      minsDiff = diff % 3600,
+      // calculate minutes from this new diff
+      minutes = Math.floor(minsDiff / 60),
+      // remainder of this division are the seconds
+      seconds = minsDiff % 60;
+
+    hour.textContent = String(hours).padStart(2, '0');
+    minute.textContent = String(minutes).padStart(2, '0');
+    second.textContent = String(seconds).padStart(2, '0');
+  };
+
 deck.addEventListener('click', event => {
+  // start timer
+  if (moves === 0) {
+    start = Math.floor(Date.now() / 1000);
+    const timerId = setInterval(updateTimer, 1000);
+  }
+
   const { target } = event;
 
   // exit if target is not an LI
@@ -120,8 +168,6 @@ deck.addEventListener('click', event => {
 
   checkingForMatch = true;
 
-  // TODO: update star count if necessary
-
   if (openCards[0].dataset.card === openCards[1].dataset.card) {
     openCards.forEach(cardElement => {
       // lock card in open position
@@ -137,7 +183,10 @@ deck.addEventListener('click', event => {
     checkingForMatch = false;
 
     // if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-    if (matchedCards.length > 15) console.log('You won!');
+    if (matchedCards.length > 15) {
+      console.log('You won!');
+      // TODO: stop timer and save time
+    }
   } else {
     // if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
     setTimeout(() => {
