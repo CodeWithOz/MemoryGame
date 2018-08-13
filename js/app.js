@@ -96,14 +96,8 @@ let checkingForMatch = false;
 
 const moveCounter = document.querySelector('.moves'),
   stars = document.querySelector('.stars'),
-
   // get the individual stars
-  [ bronze, silver, gold ] = stars.children,
-  // function for changing stars
-  changeStar = (color, star) => {
-    stars.style.color = color;
-    star.style.color = window.getComputedStyle(stars).backgroundColor;
-  };
+  [ bronze, silver, gold ] = stars.children;
 
 // timer
 let start, timerId;
@@ -122,10 +116,14 @@ const hour = document.querySelector('.hour'),
       // remainder of this division are the seconds
       seconds = minsDiff % 60;
 
-    hour.textContent = String(hours).padStart(2, '0');
-    minute.textContent = String(minutes).padStart(2, '0');
-    second.textContent = String(seconds).padStart(2, '0');
+    writeNewTime(hours, minutes, seconds);
   };
+
+function writeNewTime(hours, minutes, seconds) {
+  hour.textContent = String(hours).padStart(2, '0');
+  minute.textContent = String(minutes).padStart(2, '0');
+  second.textContent = String(seconds).padStart(2, '0');
+}
 
 // handle a clicked card
 deck.addEventListener('click', event => {
@@ -151,17 +149,17 @@ deck.addEventListener('click', event => {
 
   // increment and display move counter
   moves++;
-  moveCounter.textContent = moves;
+  updateMoves(moves);
 
   // reduce stars if necessary
   // an individual star is hidden by setting its color equal to the
   // parent container's background color
   if (moves > 74) {
     // bronze
-    changeStar('#A57164', silver);
+    updateStars('#A57164', silver);
   } else if (moves > 56) {
     // silver
-    changeStar('silver', gold);
+    updateStars('silver', gold);
   }
 
   // display the card's symbol (put this functionality in another function that you call from this one)
@@ -210,6 +208,28 @@ deck.addEventListener('click', event => {
   }
 });
 
+function updateMoves(moves) {
+  moveCounter.textContent = moves;
+}
+
+function updateStars(color, star) {
+  colorAllStars(color);
+  colorStar(star);
+};
+
+function colorAllStars(color) {
+  // an empty string will reset the color to the default
+  // see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#Setting_styles
+  stars.style.color = color;
+}
+
+function colorStar(star, reset = false) {
+  // an empty string will reset the color to the default
+  // see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#Setting_styles
+  const newColor = reset ? '' : window.getComputedStyle(stars).backgroundColor;
+  star.style.color = newColor;
+}
+
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', event => {
   /*
@@ -225,4 +245,21 @@ restartBtn.addEventListener('click', event => {
 
   // show new deck
   deck.style.display = '';
+
+  // reset the timer
+  clearInterval(timerId);
+  writeNewTime(0, 0, 0);
+
+  // reset moves
+  moves = 0;
+  updateMoves(moves);
+
+  // reset stars
+  colorAllStars('');
+  colorStar(silver, true);
+  colorStar(gold, true);
+
+  // empty cards arrays
+  openCards = [];
+  matchedCards = [];
 });
