@@ -48,6 +48,7 @@ let cards = [
  */
 
 const deck = document.querySelector('.deck');
+createDeck();
 
 function createDeck() {
   // shuffle cards
@@ -88,8 +89,6 @@ function shuffle(array) {
 
 /**** Gameplay *****/
 
-// TODO: reset the game when reset button is clicked
-
 let openCards = [], matchedCards = [], moves = 0;
 
 // ensure new cards cannot be flipped while 2 cards are already open
@@ -97,6 +96,7 @@ let checkingForMatch = false;
 
 const moveCounter = document.querySelector('.moves'),
   stars = document.querySelector('.stars'),
+
   // get the individual stars
   [ bronze, silver, gold ] = stars.children,
   // function for changing stars
@@ -127,6 +127,7 @@ const hour = document.querySelector('.hour'),
     second.textContent = String(seconds).padStart(2, '0');
   };
 
+// handle a clicked card
 deck.addEventListener('click', event => {
   // start timer
   if (moves === 0) {
@@ -207,4 +208,21 @@ deck.addEventListener('click', event => {
       checkingForMatch = false;
     }, 1000);
   }
+});
+
+const restartBtn = document.querySelector('.restart');
+restartBtn.addEventListener('click', event => {
+  /*
+   * idea gotten from Udacity JS performance guide
+   * manipulating the deck while it's hidden gives a performance gain
+   * (backed up by performance.now() data)
+   */
+  // hide deck
+  deck.style.display = 'none';
+
+  [...deck.children].forEach(child => deck.removeChild(child));
+  createDeck();
+
+  // show new deck
+  deck.style.display = '';
 });
