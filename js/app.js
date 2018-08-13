@@ -84,6 +84,8 @@ function shuffle(array) {
 
 /**** Gameplay *****/
 
+// TODO: reset the game when reset button is clicked
+
 let openCards = [], matchedCards = [], moves = 0;
 
 // ensure new cards cannot be flipped while 2 cards are already open
@@ -100,7 +102,7 @@ const moveCounter = document.querySelector('.moves'),
   };
 
 // timer
-let start;
+let start, timerId;
 const hour = document.querySelector('.hour'),
   minute = document.querySelector('.minute'),
   second = document.querySelector('.second'),
@@ -125,7 +127,7 @@ deck.addEventListener('click', event => {
   // start timer
   if (moves === 0) {
     start = Math.floor(Date.now() / 1000);
-    const timerId = setInterval(updateTimer, 1000);
+    timerId = setInterval(updateTimer, 1000);
   }
 
   const { target } = event;
@@ -184,8 +186,8 @@ deck.addEventListener('click', event => {
 
     // if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
     if (matchedCards.length > 15) {
+      clearInterval(timerId);
       console.log('You won!');
-      // TODO: stop timer and save time
     }
   } else {
     // if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
