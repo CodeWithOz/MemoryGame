@@ -46,26 +46,30 @@ let cards = [
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-// shuffle cards
-cards = shuffle(cards);
 
 const deck = document.querySelector('.deck');
-const tempDeck = document.createDocumentFragment();
 
-// create card HTML for each card
-cards.forEach(card => {
-  const li = document.createElement('li');
-  li.classList.add('card');
+function createDeck() {
+  // shuffle cards
+  cards = shuffle(cards);
 
-  // identify card type with data attribute
-  li.dataset.card = card;
+  const tempDeck = document.createDocumentFragment();
 
-  li.innerHTML = `<i class="fa fa-${card}"></i>`;
-  tempDeck.appendChild(li);
-});
+  // create card HTML for each card
+  cards.forEach(card => {
+    const li = document.createElement('li');
+    li.classList.add('card');
 
-// add cards to deck
-deck.appendChild(tempDeck);
+    // identify card type with data attribute
+    li.dataset.card = card;
+
+    li.innerHTML = `<i class="fa fa-${card}"></i>`;
+    tempDeck.appendChild(li);
+  });
+
+  // add cards to deck
+  deck.appendChild(tempDeck);
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
