@@ -61,13 +61,10 @@ function createDeck() {
     const li = document.createElement('li');
     li.classList.add('card', 'flipper');
 
-    // identify card type with data attribute
-    li.dataset.card = card;
-
     li.innerHTML = `
       <div class="front"></div>
       <div class="back">
-        <i class="fa fa-${card}"></i>
+        <i class="fa fa-${card}" data-card="${card}"></i>
       </div>
       `;
     tempDeck.appendChild(li);
@@ -268,3 +265,13 @@ function shuffle(array) {
 //   openCards = [];
 //   matchedCards = [];
 // });
+
+let openCard, matchedCards = [];
+deck.addEventListener('click', event => {
+  const { target } = event;
+
+  // exit if click is not from the front of a card
+  if (!target.matches('div.front')) return;
+
+  target.parentElement.classList.toggle('flip');
+});
