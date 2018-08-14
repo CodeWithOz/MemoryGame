@@ -266,7 +266,7 @@ function shuffle(array) {
 //   matchedCards = [];
 // });
 
-let openCard, matchedCards = [];
+let openCard = null, matchedCards = [];
 deck.addEventListener('click', event => {
   const { target } = event;
 
@@ -274,4 +274,36 @@ deck.addEventListener('click', event => {
   if (!target.matches('div.front')) return;
 
   target.parentElement.classList.toggle('flip');
+  const back = target.nextElementSibling;
+
+  if (!(openCard instanceof Element)) {
+    // add this card and exit
+    openCard = back;
+    return;
+  }
+
+  const { card } = back.firstElementChild.dataset;
+  if (card === openCard.firstElementChild.dataset.card) {
+    // we have a match
+    [openCard, back].forEach(card => {
+      card.classList.add('match');
+    });
+    matchedCards.push(openCard, back);
+
+    // TODO: check for all matched cards
+  } else {
+    // no match
+    // TODO: reset game metrics
+
+    // delay card reset for 1 second
+    setTimeout(() => {
+      [openCard, back, ...matchedCards].forEach(card => {
+        card.parentElement.classList.remove('flip');
+        card.classList.remove('match');
+      });
+
+      // empty the open card variable
+      openCard = null;
+    }, 1000);
+  }
 });
