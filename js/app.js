@@ -59,12 +59,17 @@ function createDeck() {
   // create card HTML for each card
   cards.forEach(card => {
     const li = document.createElement('li');
-    li.classList.add('card');
+    li.classList.add('card', 'flipper');
 
     // identify card type with data attribute
     li.dataset.card = card;
 
-    li.innerHTML = `<i class="fa fa-${card}"></i>`;
+    li.innerHTML = `
+      <div class="front"></div>
+      <div class="back">
+        <i class="fa fa-${card}"></i>
+      </div>
+      `;
     tempDeck.appendChild(li);
   });
 
