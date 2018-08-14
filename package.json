@@ -1,0 +1,23 @@
+{
+  "name": "memorygame",
+  "version": "1.0.0",
+  "description": "Udacity memory game project",
+  "main": "index.html",
+  "scripts": {
+    "build": "npx babel js --out-file game.js --source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeWithOz/MemoryGame.git"
+  },
+  "author": "Uche Ozoemena",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeWithOz/MemoryGame/issues"
+  },
+  "homepage": "https://github.com/CodeWithOz/MemoryGame#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
