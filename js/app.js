@@ -387,16 +387,6 @@ function resetFlippedCard(card) {
 
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', event => {
-  // recreate deck
-  // first hide the deck
-  deck.style.display = 'none';
-  // remove all cards
-  [...deck.children].forEach(card => deck.removeChild(card));
-  // create a new arrangement
-  createDeck();
-  // show new deck
-  deck.style.display = '';
-
   // reset move counter
   updateMoveCounter(true);
 
@@ -413,4 +403,17 @@ restartBtn.addEventListener('click', event => {
   cardsToReset.forEach(resetFlippedCard);
   openCard = null;
   matchedCards = [];
+
+  // delay recreating the deck until the flip animation ends
+  setTimeout(() => {
+    // recreate deck
+    // first hide the deck
+    deck.style.display = 'none';
+    // remove all cards
+    [...deck.children].forEach(card => deck.removeChild(card));
+    // create a new arrangement
+    createDeck();
+    // show new deck
+    deck.style.display = '';
+  }, 300);
 });
