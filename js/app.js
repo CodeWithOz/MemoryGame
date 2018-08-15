@@ -384,3 +384,33 @@ function resetFlippedCard(card) {
   card.parentElement.classList.remove('flip');
   card.classList.remove('match');
 }
+
+const restartBtn = document.querySelector('.restart');
+restartBtn.addEventListener('click', event => {
+  // recreate deck
+  // first hide the deck
+  deck.style.display = 'none';
+  // remove all cards
+  [...deck.children].forEach(card => deck.removeChild(card));
+  // create a new arrangement
+  createDeck();
+  // show new deck
+  deck.style.display = '';
+
+  // reset move counter
+  updateMoveCounter(true);
+
+  // reset timer
+  clearInterval(timerId);
+  updateTimer(0, 0, 0);
+
+  // reset stars
+  stars.classList.remove('bronze', 'silver');
+
+  // reset open cards
+  const cardsToReset = [...matchedCards];
+  if (cardIsOpen()) cardsToReset.push(openCard);
+  cardsToReset.forEach(resetFlippedCard);
+  openCard = null;
+  matchedCards = [];
+});
