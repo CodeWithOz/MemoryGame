@@ -266,14 +266,20 @@ function shuffle(array) {
 //   matchedCards = [];
 // });
 
-let openCard = null, matchedCards = [];
+let openCard = null,
+  matchedCards = [],
+  checkingForMatch = false;
+
 deck.addEventListener('click', event => {
   const { target } = event;
 
   // exit if click is not from the front of a card
   if (!target.matches('div.front')) return;
 
-  target.parentElement.classList.toggle('flip');
+  // exit if checking for match
+  if (checkingForMatch) return;
+
+  target.parentElement.classList.add('flip');
   const back = target.nextElementSibling;
 
   if (!(openCard instanceof Element)) {
@@ -282,6 +288,7 @@ deck.addEventListener('click', event => {
     return;
   }
 
+  checkingForMatch = true;
   const { card } = back.firstElementChild.dataset;
   if (card === openCard.firstElementChild.dataset.card) {
     // we have a match
@@ -290,17 +297,23 @@ deck.addEventListener('click', event => {
     });
     matchedCards.push(openCard, back);
 
-    // TODO: check for all matched cards
+    openCard = null;
+    checkingForMatch = false;
+
+    if (matchedCards.length > 15) {
+      console.log('You won!');
+      return;
+    }
   } else {
     // no match
-    // TODO: reset game metrics
-
     // delay card reset for 1 second
     setTimeout(() => {
       [openCard, back, ...matchedCards].forEach(card => {
         card.parentElement.classList.remove('flip');
         card.classList.remove('match');
       });
+      matchedCards = [];
+      checkingForMatch = false;
 
       // empty the open card variable
       openCard = null;
