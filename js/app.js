@@ -268,7 +268,11 @@ function shuffle(array) {
 
 let openCard = null,
   matchedCards = [],
-  checkingForMatch = false;
+  // flag to know when to throttle clicks
+  checkingForMatch = false,
+  moves = 0;
+
+const moveCounter = document.querySelector('.moves');
 
 deck.addEventListener('click', event => {
   const { target } = event;
@@ -278,6 +282,14 @@ deck.addEventListener('click', event => {
 
   // exit if checking for match
   if (checkingForMatch) return;
+
+  // increment moves
+  updateMoves();
+
+  function updateMoves(toZero = false) {
+    moves = !toZero ? ++moves : 0;
+    moveCounter.textContent = moves;
+  }
 
   target.parentElement.classList.add('flip');
   const back = target.nextElementSibling;
