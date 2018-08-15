@@ -270,15 +270,49 @@ let openCard = null,
   matchedCards = [],
   // flag to know when to throttle clicks
   checkingForMatch = false,
+  timerId,
+  start,
   moves = 0;
 
-const moveCounter = document.querySelector('.moves');
+const stars = document.querySelector('.stars'),
+  [bronze, silver, gold] = stars.children,
+  hour = document.querySelector('.hour'),
+  minute = document.querySelector('.minute'),
+  second = document.querySelector('.second'),
+  moveCounter = document.querySelector('.moves');
 
 deck.addEventListener('click', event => {
   const { target } = event;
 
   // exit if click is not from the front of a card
   if (!target.matches('div.front')) return;
+
+  // start timer when first card is flipped
+  if (moves === 0) {
+    start = Math.floor(Date.now() / 1000);
+    timerId = setInterval(() => {
+      const now = Math.floor(Date.now() / 1000);
+      let diff = now - start;
+      curHour = Math.floor(diff / 3600);
+
+      // new diff is the remaining seconds
+      diff = diff % 3600;
+
+      curMin = Math.floor(diff / 60);
+      curSec = diff % 60;
+      updateTimer(generateTimeString(curHour, curMin, curSec));
+    }, 1000);
+  }
+
+  function generateTimeString(...args) {
+    return args.map(timeElement => String(timeElement).padStart(2, '0'));
+  }
+
+  function updateTimer([hours, minutes, seconds]) {
+    hour.textContent = hours;
+    minute.textContent = minutes;
+    second.textContent = seconds;
+  }
 
   // exit if checking for match
   if (checkingForMatch) return;
@@ -313,6 +347,9 @@ deck.addEventListener('click', event => {
     checkingForMatch = false;
 
     if (matchedCards.length > 15) {
+      // stop timer
+      clearInterval(timerId);
+
       console.log('You won!');
       return;
     }
