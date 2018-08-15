@@ -138,6 +138,24 @@ align-items: center;
     margin: 0 5px 0 0;
 }
 
+.stars.silver {
+  color: silver;
+}
+
+.stars.silver .third-star {
+  /* make the third star invisible */
+  color: rgba(255, 255, 255, 0);
+}
+
+.stars.bronze {
+  color: #a57164;
+}
+
+.stars.bronze .second-star {
+  /* make the second star invisible */
+  color: rgba(255, 255, 255, 0);
+}
+
 .score-panel .stars li {
     list-style: none;
     display: inline-block;

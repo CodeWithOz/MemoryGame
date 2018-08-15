@@ -325,6 +325,15 @@ deck.addEventListener('click', event => {
     moveCounter.textContent = moves;
   }
 
+  // update stars if necessary
+  if (moves > 74) {
+    // bronze
+    stars.classList.add('bronze');
+  } else if (moves > 56) {
+    // silver
+    stars.classList.add('silver');
+  }
+
   target.parentElement.classList.add('flip');
   const back = target.nextElementSibling;
 
