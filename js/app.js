@@ -300,30 +300,15 @@ deck.addEventListener('click', event => {
 
       curMin = Math.floor(diff / 60);
       curSec = diff % 60;
-      updateTimer(generateTimeString(curHour, curMin, curSec));
+      updateTimer(curHour, curMin, curSec);
     }, 1000);
-  }
-
-  function generateTimeString(...args) {
-    return args.map(timeElement => String(timeElement).padStart(2, '0'));
-  }
-
-  function updateTimer([hours, minutes, seconds]) {
-    hour.textContent = hours;
-    minute.textContent = minutes;
-    second.textContent = seconds;
   }
 
   // exit if checking for match
   if (checkingForMatch) return;
 
   // increment moves
-  updateMoves();
-
-  function updateMoves(toZero = false) {
-    moves = !toZero ? ++moves : 0;
-    moveCounter.textContent = moves;
-  }
+  updateMoveCounter();
 
   // update stars if necessary
   if (moves > 74) {
@@ -337,7 +322,7 @@ deck.addEventListener('click', event => {
   target.parentElement.classList.add('flip');
   const back = target.nextElementSibling;
 
-  if (!(openCard instanceof Element)) {
+  if (!cardIsOpen()) {
     // add this card and exit
     openCard = back;
     return;
@@ -352,7 +337,6 @@ deck.addEventListener('click', event => {
     });
     matchedCards.push(openCard, back);
 
-    openCard = null;
     checkingForMatch = false;
 
     if (matchedCards.length > 15) {
@@ -360,21 +344,43 @@ deck.addEventListener('click', event => {
       clearInterval(timerId);
 
       console.log('You won!');
-      return;
     }
   } else {
     // no match
+    const tempOpenCard = openCard; // openCard will be null inside timeout callback
     // delay card reset for 1 second
     setTimeout(() => {
-      [openCard, back, ...matchedCards].forEach(card => {
-        card.parentElement.classList.remove('flip');
-        card.classList.remove('match');
-      });
+      [tempOpenCard, back, ...matchedCards].forEach(resetFlippedCard);
       matchedCards = [];
       checkingForMatch = false;
-
-      // empty the open card variable
-      openCard = null;
     }, 1000);
   }
+
+  // empty the open card variable
+  openCard = null;
 });
+
+function updateTimer(...args) {
+  const [hours, minutes, seconds] = generateTimeString(args);
+  hour.textContent = hours;
+  minute.textContent = minutes;
+  second.textContent = seconds;
+}
+
+function generateTimeString(timeArr) {
+  return timeArr.map(timeElement => String(timeElement).padStart(2, '0'));
+}
+
+function updateMoveCounter(toZero = false) {
+  moves = !toZero ? ++moves : 0;
+  moveCounter.textContent = moves;
+}
+
+function cardIsOpen() {
+  return openCard instanceof Element;
+}
+
+function resetFlippedCard(card) {
+  card.parentElement.classList.remove('flip');
+  card.classList.remove('match');
+}
