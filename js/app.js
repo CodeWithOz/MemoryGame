@@ -272,10 +272,12 @@ let openCard = null,
   checkingForMatch = false,
   timerId,
   start,
-  moves = 0;
+  moves = 0,
+  hardDifficulty = false;
 
 const stars = document.querySelector('.stars'),
   [bronze, silver, gold] = stars.children,
+  fieldset = document.querySelector('fieldset'),
   hour = document.querySelector('.hour'),
   minute = document.querySelector('.minute'),
   second = document.querySelector('.second'),
@@ -287,8 +289,8 @@ deck.addEventListener('click', event => {
   // exit if click is not from the front of a card
   if (!target.matches('div.front')) return;
 
-  // start timer when first card is flipped
   if (moves === 0) {
+    // start timer when first card is flipped
     start = Math.floor(Date.now() / 1000);
     timerId = setInterval(() => {
       const now = Math.floor(Date.now() / 1000);
@@ -302,6 +304,9 @@ deck.addEventListener('click', event => {
       curSec = diff % 60;
       updateTimer(curHour, curMin, curSec);
     }, 1000);
+
+    // deactivate the difficulty selector
+    fieldset.setAttribute('disabled', 'true');
   }
 
   // exit if checking for match
@@ -311,10 +316,13 @@ deck.addEventListener('click', event => {
   updateMoveCounter();
 
   // update stars if necessary
-  if (moves > 74) {
+  const goldThreshold = hardDifficulty ? 56 : 28;
+  const silverThreshold = hardDifficulty ? 74 : 32;
+
+  if (moves > silverThreshold) {
     // bronze
     stars.classList.add('bronze');
-  } else if (moves > 56) {
+  } else if (moves > goldThreshold) {
     // silver
     stars.classList.add('silver');
   }
@@ -350,8 +358,12 @@ deck.addEventListener('click', event => {
     const tempOpenCard = openCard; // openCard will be null inside timeout callback
     // delay card reset for 1 second
     setTimeout(() => {
-      [tempOpenCard, back, ...matchedCards].forEach(resetFlippedCard);
-      matchedCards = [];
+      const cardsToReset = [tempOpenCard, back];
+      if (hardDifficulty) {
+        cardsToReset.push(...matchedCards);
+        matchedCards = [];
+      }
+      cardsToReset.forEach(resetFlippedCard);
       checkingForMatch = false;
     }, 1000);
   }
@@ -385,6 +397,17 @@ function resetFlippedCard(card) {
   card.classList.remove('match');
 }
 
+// select difficulty
+fieldset.addEventListener('change', event => {
+  const { target } = event;
+
+  // exit if selection didn't change
+  if (target.tagName !== 'INPUT') return;
+
+  hardDifficulty = target.value === 'hard' ? true : false;
+});
+
+// restart the game
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', event => {
   // reset move counter
@@ -415,5 +438,8 @@ restartBtn.addEventListener('click', event => {
     createDeck();
     // show new deck
     deck.style.display = '';
+
+    // reactivate the difficulty selector
+    fieldset.removeAttribute('disabled');
   }, 300);
 });

@@ -119,11 +119,32 @@ align-items: center;
 }
 
 /*
+ * Styles for Difficulty Choice
+ */
+
+legend {
+  text-align: center;
+}
+
+input,
+label {
+  cursor: pointer;
+}
+
+fieldset[disabled="true"],
+fieldset[disabled="true"] input,
+fieldset[disabled="true"] label {
+  cursor: not-allowed;
+}
+
+/*
  * Styles for the Score Panel
  */
 
 .score-panel {
-    width: 80%;
+    /* 80% of deck width */
+    width: 528px;
+
     margin-bottom: 10px;
     display: flex;
     align-items: center;
