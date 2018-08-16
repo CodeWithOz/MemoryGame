@@ -123,9 +123,12 @@ align-items: center;
  */
 
 .score-panel {
-    text-align: left;
-    width: 345px;
+    width: 80%;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 1.5em;
 }
 
 .score-panel .stars {
@@ -135,7 +138,6 @@ align-items: center;
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
 }
 
 .stars.silver {
@@ -161,7 +163,12 @@ align-items: center;
     display: inline-block;
 }
 
+.score-panel .move-display,
+.score-panel .time-display {
+  font-family: monospace;
+  margin: 0;
+}
+
 .score-panel .restart {
-    float: right;
     cursor: pointer;
 }
