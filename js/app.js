@@ -269,11 +269,12 @@ function shuffle(array) {
 let openCard = null,
   matchedCards = [],
   // flag to know when to throttle clicks
-  checkingForMatch = false,
+  flippingIsPaused = false,
   timerId,
   start,
   moves = 0,
-  hardDifficulty = false;
+  hardDifficulty = false,
+  restartingGame = false;
 
 const stars = document.querySelector('.stars'),
   [bronze, silver, gold] = stars.children,
@@ -310,7 +311,7 @@ deck.addEventListener('click', event => {
   }
 
   // exit if checking for match
-  if (checkingForMatch) return;
+  if (flippingIsPaused) return;
 
   // increment moves
   updateMoveCounter();
@@ -336,7 +337,7 @@ deck.addEventListener('click', event => {
     return;
   }
 
-  checkingForMatch = true;
+  flippingIsPaused = true;
   const { card } = back.firstElementChild.dataset;
   if (card === openCard.firstElementChild.dataset.card) {
     // we have a match
@@ -345,7 +346,7 @@ deck.addEventListener('click', event => {
     });
     matchedCards.push(openCard, back);
 
-    checkingForMatch = false;
+    flippingIsPaused = false;
 
     if (matchedCards.length > 15) {
       // stop timer
@@ -364,7 +365,7 @@ deck.addEventListener('click', event => {
         matchedCards = [];
       }
       cardsToReset.forEach(resetFlippedCard);
-      checkingForMatch = false;
+      flippingIsPaused = false;
     }, 1000);
   }
 
@@ -392,9 +393,34 @@ function cardIsOpen() {
   return openCard instanceof Element;
 }
 
-function resetFlippedCard(card) {
+function resetFlippedCard(card, index, origArray) {
+  if (index === origArray.length - 1 && restartingGame) {
+    // this is the last card being flipped when the game is being reset
+    // so recreate the deck after it has flipped
+    card.parentElement.addEventListener('transitionend', recreateDeck);
+  }
   card.parentElement.classList.remove('flip');
   card.classList.remove('match');
+}
+
+function recreateDeck(event) {
+  // first hide the deck
+  deck.style.display = 'none';
+  // remove all cards
+  [...deck.children].forEach(card => deck.removeChild(card));
+  // create a new arrangement
+  createDeck();
+  // show new deck
+  deck.style.display = '';
+
+  // reactivate the difficulty selector
+  fieldset.removeAttribute('disabled');
+
+  restartingGame = false;
+  flippingIsPaused = false;
+
+  // remove this event listener to prevent it from firing at the wrong time
+  event.target.removeEventListener('transitionend', recreateDeck);
 }
 
 // select difficulty
@@ -410,6 +436,9 @@ fieldset.addEventListener('change', event => {
 // restart the game
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', event => {
+  restartingGame = true;
+  flippingIsPaused = true;
+
   // reset move counter
   updateMoveCounter(true);
 
@@ -422,24 +451,11 @@ restartBtn.addEventListener('click', event => {
 
   // reset open cards
   const cardsToReset = [...matchedCards];
-  if (cardIsOpen()) cardsToReset.push(openCard);
+
+  // final card is always a matched card
+  if (cardIsOpen()) cardsToReset.unshift(openCard);
+
   cardsToReset.forEach(resetFlippedCard);
   openCard = null;
   matchedCards = [];
-
-  // delay recreating the deck until the flip animation ends
-  setTimeout(() => {
-    // recreate deck
-    // first hide the deck
-    deck.style.display = 'none';
-    // remove all cards
-    [...deck.children].forEach(card => deck.removeChild(card));
-    // create a new arrangement
-    createDeck();
-    // show new deck
-    deck.style.display = '';
-
-    // reactivate the difficulty selector
-    fieldset.removeAttribute('disabled');
-  }, 300);
 });
