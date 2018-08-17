@@ -121,13 +121,13 @@ deck.addEventListener('click', event => {
     timerId = setInterval(() => {
       const now = Math.floor(Date.now() / 1000);
       let diff = now - start;
-      curHour = Math.floor(diff / 3600);
+      const curHour = Math.floor(diff / 3600);
 
       // new diff is the remaining seconds
       diff = diff % 3600;
 
-      curMin = Math.floor(diff / 60);
-      curSec = diff % 60;
+      const curMin = Math.floor(diff / 60);
+      const curSec = diff % 60;
       updateTimer(curHour, curMin, curSec);
     }, 1000);
 
