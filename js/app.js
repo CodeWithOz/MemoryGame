@@ -416,6 +416,11 @@ function resetFlippedCard(card, index, origArray) {
 }
 
 function recreateDeck(event) {
+  /*
+   * idea gotten from Udacity JS performance guide
+   * manipulating the deck while it's hidden gives a performance gain
+   * (backed up by performance.now() data)
+   */
   // first hide the deck
   deck.style.display = 'none';
   // remove all cards
@@ -423,6 +428,8 @@ function recreateDeck(event) {
   // create a new arrangement
   createDeck();
   // show new deck
+  // an empty string will reset the style value to the default
+  // see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style#Setting_styles
   deck.style.display = '';
 
   // reactivate the difficulty selector
