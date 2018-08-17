@@ -227,7 +227,8 @@ fieldset[disabled="true"] label {
 
 .congrats-modal {
   text-align: center;
-  border: 2px solid red;
+  border: 5px solid #09bd09;
+  border-radius: 10px;
   background: white;
   width: 400px;
   max-width: 80%;
