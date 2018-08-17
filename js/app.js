@@ -481,3 +481,15 @@ overlay.addEventListener('click', event => {
 function hideModal(overlay) {
   overlay.classList.remove('shown');
 }
+
+const closeModalBtn = document.querySelector('.button[name="close"]');
+// invoke a click on the background so the modal is dismissed
+closeModalBtn.addEventListener('click', event => overlay.click());
+
+const modalRestartBtn = document.querySelector('.button[name="restart"]');
+modalRestartBtn.addEventListener('click', event => {
+  // invoke a click on the background so the modal is dismissed
+  overlay.click();
+  // invoke a click on the actual restart button so the grid & game reset
+  restartBtn.click();
+});

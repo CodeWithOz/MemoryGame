@@ -272,3 +272,11 @@ fieldset[disabled="true"] label {
   /* the flexbox-approved version of justify-self: left */
   margin-right: auto;
 }
+
+.buttons {
+  margin: 0 auto 10px;
+}
+
+.button {
+  font-size: 1.1em;
+}
