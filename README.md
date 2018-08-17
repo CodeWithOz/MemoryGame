@@ -1,5 +1,9 @@
 # Memory Game Project
 
+### Live Demo
+* [Click here](https://codewithoz.github.io/MemoryGame/)
+* Or copy and paste this link into your browser: https://codewithoz.github.io/MemoryGame/
+
 ## Table of Contents
 
 * [Instructions](#instructions)
