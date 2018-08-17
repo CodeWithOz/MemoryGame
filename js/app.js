@@ -352,7 +352,19 @@ deck.addEventListener('click', event => {
       // stop timer
       clearInterval(timerId);
 
-      console.log('You won!');
+      // assign necessary metrics to congrats modal
+      const [difficulty, rating, finalMoves, time] = [...document.querySelectorAll('.metric-value')];
+      difficulty.textContent = hardDifficulty ? 'HARD' : 'EASY';
+      // for stars, show the same content and display from score panel
+      // outerHTML contains the <ul> tag for the list
+      rating.innerHTML = stars.outerHTML;
+      finalMoves.textContent = moves;
+      // for time, show the same content/display from score panel
+      // innerHTML contains the relevant info
+      time.innerHTML = document.querySelector('.time-display').innerHTML;
+
+      // display the modal
+      document.querySelector('.overlay').classList.add('shown');
     }
   } else {
     // no match
@@ -459,3 +471,13 @@ restartBtn.addEventListener('click', event => {
   openCard = null;
   matchedCards = [];
 });
+
+// hide congrats modal
+const overlay = document.querySelector('.overlay');
+overlay.addEventListener('click', event => {
+  if (event.target.matches('section.overlay.shown')) hideModal(event.target);
+});
+
+function hideModal(overlay) {
+  overlay.classList.remove('shown');
+}

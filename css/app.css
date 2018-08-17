@@ -152,7 +152,7 @@ fieldset[disabled="true"] label {
     font-size: 1.5em;
 }
 
-.score-panel .stars {
+.stars {
     /* player starts with 3 gold stars */
     color: gold;
 
@@ -179,7 +179,7 @@ fieldset[disabled="true"] label {
   color: rgba(255, 255, 255, 0);
 }
 
-.score-panel .stars li {
+.stars li {
     list-style: none;
     display: inline-block;
 }
@@ -192,4 +192,83 @@ fieldset[disabled="true"] label {
 
 .score-panel .restart {
     cursor: pointer;
+}
+
+/*
+ * Styles for congrats modal
+ */
+
+.overlay {
+  /* cover screen */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+
+  /* place it above all its siblings */
+  z-index: 1;
+
+  /* horizontally center the contents */
+  display: flex;
+  justify-content: center;
+
+  /* initial invisible state */
+  background: rgba(0,0,0,0);
+  visibility: hidden;
+
+  transition: visibility 0.3s, background 0.3s;
+}
+
+.overlay.shown {
+  /* when shown */
+  visibility: visible;
+  background: rgba(0,0,0,0.8);
+}
+
+.congrats-modal {
+  text-align: center;
+  border: 2px solid red;
+  background: white;
+  width: 400px;
+  max-width: 80%;
+  position: absolute;
+
+  /* initially out of view */
+  top: -999px;
+
+  transition: top 0.3s;
+}
+
+.overlay.shown .congrats-modal {
+  top: 100px;
+}
+
+.modal-heading {
+  color: #09bd09;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.metric-title,
+.metric-value {
+  margin: 0.5em;
+
+  /* vertically center the contents */
+  display: flex;
+  align-items: center;
+}
+
+.metric-title {
+  /* the flexbox-approved version of justify-self: right */
+  margin-left: auto;
+
+  font-size: 1.3em;
+}
+
+.metric-value {
+  /* the flexbox-approved version of justify-self: left */
+  margin-right: auto;
 }
