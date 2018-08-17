@@ -1,74 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Matching Game</title>
-    <meta name="description" content="">
-    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
-    <link rel="stylesheet" href="css/app.css">
+  <meta charset="utf-8">
+  <title>Memory Game</title>
+  <meta name="description" content="">
+  <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Matching Game</h1>
-        </header>
+  <div class="container">
+    <header>
+      <h1>Memory Game</h1>
+    </header>
 
-        <section class="overlay">
-          <div class="congrats-modal">
-            <h2 class="modal-heading">You win! Nice work 👍</h2>
-            <div class="metrics">
-              <p class="metric-title">Difficulty</p>
-              <p class="metric-value"></p>
-              <p class="metric-title">Rating</p>
-              <p class="metric-value"></p>
-              <p class="metric-title">Moves</p>
-              <p class="metric-value"></p>
-              <p class="metric-title">Time</p>
-              <p class="metric-value"></p>
-            </div>
-            <div class="buttons">
-              <button type="button" class="button" name="close">Close</button>
-              <button type="button" class="button" name="restart">Restart Game</button>
-            </div>
-          </div>
-        </section>
+    <section class="overlay">
+      <div class="congrats-modal">
+        <h2 class="modal-heading">You win! Nice work 👍</h2>
+        <div class="metrics">
+          <p class="metric-title">Difficulty</p>
+          <p class="metric-value"></p>
+          <p class="metric-title">Rating</p>
+          <p class="metric-value"></p>
+          <p class="metric-title">Moves</p>
+          <p class="metric-value"></p>
+          <p class="metric-title">Time</p>
+          <p class="metric-value"></p>
+        </div>
+        <div class="buttons">
+          <button type="button" class="button" name="close">Close</button>
+          <button type="button" class="button" name="restart">Restart Game</button>
+        </div>
+      </div>
+    </section>
 
-        <form class="choice">
-          <fieldset>
-            <legend>Select difficulty</legend>
+    <form class="choice">
+      <fieldset>
+        <legend>Select difficulty</legend>
 
-            <input type="radio" name="difficulty" id="easy" value="easy" checked>
-            <label for="easy">Easy</label>
+        <input type="radio" name="difficulty" id="easy" value="easy" checked>
+        <label for="easy">Easy</label>
 
-            <input type="radio" name="difficulty" id="hard" value="hard">
-            <label for="hard">Hard</label>
-          </fieldset>
-        </form>
+        <input type="radio" name="difficulty" id="hard" value="hard">
+        <label for="hard">Hard</label>
+      </fieldset>
+    </form>
 
-        <section class="score-panel">
-          <ul class="stars">
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star second-star"></i></li>
-            <li><i class="fa fa-star third-star"></i></li>
-          </ul>
+    <section class="score-panel">
+      <ul class="stars">
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star second-star"></i></li>
+        <li><i class="fa fa-star third-star"></i></li>
+      </ul>
 
-          <p class="move-display"><span class="moves">0</span> Moves</p>
+      <p class="move-display"><span class="moves">0</span> Moves</p>
 
-          <p class="time-display">
-            <span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span>
-          </p>
-          <div class="restart">
-            <i class="fa fa-repeat"></i>
-          </div>
-        </section>
+      <p class="time-display">
+        <span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span>
+      </p>
+      <div class="restart">
+        <i class="fa fa-repeat"></i>
+      </div>
+    </section>
 
-        <ul class="deck"></ul>
+    <ul class="deck"></ul>
 
-        <footer><a href="https://codewithoz.github.io/MemoryGame/">Click here</a> for source code.</footer>
-    </div>
+    <footer><a href="https://codewithoz.github.io/MemoryGame/">Click here</a> for source code.</footer>
+  </div>
 
-    <script src="game.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
