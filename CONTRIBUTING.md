@@ -1,3 +1,10 @@
 # How to contribute
 
-The files in this repository are used as the starting point for all students. Because we want students to write the majority of the code themselves, pull requests (most likely) will _not_ be merged into the project.
+Feel free to submit pull requests for any updates you feel are necessary.
+Once the project has been graded by Udacity, I will be happy to review and
+accept PRs.
+
+`git clone` the files to your local system and submit PRs as new branches from
+`master`. Preferably, branch names should concisely indicate the
+update/feature being provided. After reviewing a PR, I will merge the branch
+into `master` to add your updates to the main game :-). Thanks!

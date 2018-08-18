@@ -7,19 +7,32 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
+  * [Gameplay](#gameplay)
+* [Dependencies](#dependencies)
 * [Contributing](#contributing)
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The live demo above allows the game to be played without the local files.
+You can `git clone` this repo to get the files locally.
 
-To get started, open `js/app.js` and start building out the app's functionality
+### Gameplay
+The goal of the game is to match all 16 cards with as few moves and in as little
+time as possible. Click/tap a card to reveal its content, then click/tap
+another card to see if it matches the revealed card. Unmatched cards will
+hide their contents again.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## Dependencies
+* [BabelJS' CLI](https://babeljs.io/docs/en/babel-cli) installed **_local_** to the project
+* [BabelJS' _env_ preset](https://babeljs.io/docs/en/babel-preset-env) installed **_local_** to the project
+* [npx](https://www.npmjs.com/package/npx) installed **_globally_** if it was not installed with your
+version of [npm](https://www.npmjs.com/) (run `npx --version` at the command line to check)
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+Feel free to submit pull requests for any updates you feel are necessary.
+Once the project has been graded by Udacity, I will be happy to review and
+accept PRs.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 
