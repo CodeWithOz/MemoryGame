@@ -251,7 +251,9 @@ function resetFlippedCard(card, index, origArray) {
   card.classList.remove('match');
 }
 
-function recreateDeck(event) {
+function recreateDeck() {
+  var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
   /*
    * idea gotten from Udacity JS performance guide
    * manipulating the deck while it's hidden gives a performance gain
@@ -276,8 +278,11 @@ function recreateDeck(event) {
   restartingGame = false;
   flippingIsPaused = false;
 
-  // remove this event listener to prevent it from firing at the wrong time
-  event.target.removeEventListener('transitionend', recreateDeck);
+  if (event) {
+    // recreateDeck() was invoked as an event listener
+    // remove it to prevent firing at the wrong time
+    event.target.removeEventListener('transitionend', recreateDeck);
+  }
 }
 
 // select difficulty
@@ -294,6 +299,9 @@ fieldset.addEventListener('change', function (event) {
 // restart the game
 var restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', function (event) {
+  // game has not started
+  if (moves < 1) return;
+
   restartingGame = true;
   flippingIsPaused = true;
 
@@ -313,7 +321,16 @@ restartBtn.addEventListener('click', function (event) {
   // final card is always a matched card
   if (cardIsOpen()) cardsToReset.unshift(openCard);
 
-  cardsToReset.forEach(resetFlippedCard);
+  if (cardsToReset.length < 1) {
+    // no matched or open cards but player has seen some cards already
+    // resetFlippedCard() will never be invoked, and consequently recreateDeck() too
+    // resetFlippedCard() doesn't need to invoked, but recreateDeck() must be
+    // no argument is passed because no need to remove event listener
+    recreateDeck();
+  } else {
+    cardsToReset.forEach(resetFlippedCard);
+  }
+
   openCard = null;
   matchedCards = [];
 });
