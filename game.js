@@ -106,6 +106,9 @@ deck.addEventListener('click', function (event) {
 
   if (!target.matches('div.front')) return;
 
+  // exit if checking for match
+  if (flippingIsPaused) return;
+
   if (moves === 0) {
     // start timer when first card is flipped
     start = Math.floor(Date.now() / 1000);
@@ -125,9 +128,6 @@ deck.addEventListener('click', function (event) {
     // deactivate the difficulty selector
     fieldset.setAttribute('disabled', 'true');
   }
-
-  // exit if checking for match
-  if (flippingIsPaused) return;
 
   // increment moves
   updateMoveCounter();
