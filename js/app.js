@@ -379,9 +379,11 @@ intro.setOptions({
 intro.start();
 
 const closeModalBtn = document.querySelector('.button[name="close"]');
-// invoke a click on the background so the modal is dismissed
 closeModalBtn.addEventListener('click', event => {
+  // invoke a click on the background so the modal is dismissed
   overlay.click();
+
+  // show hint on restart button
   intro.showHints();
 });
 
@@ -389,6 +391,7 @@ const modalRestartBtn = document.querySelector('.button[name="restart"]');
 modalRestartBtn.addEventListener('click', event => {
   // invoke a click on the background so the modal is dismissed
   overlay.click();
+
   // invoke a click on the actual restart button so the grid & game reset
   restartBtn.click();
 });
