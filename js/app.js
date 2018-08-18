@@ -329,9 +329,61 @@ function hideModal(overlay) {
   overlay.classList.remove('shown');
 }
 
+/* Display introductory guide using IntroJS library */
+
+const intro = introJs();
+
+// intro tooltips and settings
+intro.setOptions({
+  steps: [
+    {
+      element: 'h1',
+      intro: 'Hello and welcome to the Memory Game!'
+    },
+    {
+      element: 'form',
+      intro: 'Always choose a difficulty <strong><em>before</em></strong> making your first move.'
+    },
+    {
+      element: restartBtn,
+      intro: `Clicking this button will restart the game.
+        No need for that... <em>yet</em>. 😉`
+    },
+    {
+      element: '.score-panel',
+      intro: 'Keep track of your performance with these metrics.'
+    },
+    {
+      element: deck,
+      intro: `Now you're ready!<br>
+        Click any card get to started.<br>
+        Then click another card to see if you found a match... 🤞.<br>
+        Find all the matches to win. Good luck!`
+    }
+  ],
+  hidePrev: true,
+  hideNext: true,
+  tooltipPosition: 'auto',
+  scrollTo: 'tooltip',
+
+  // for hints
+  hints: [
+    {
+      hint: 'Click this button to restart the game.',
+      element: '.fa-repeat'
+    }
+  ]
+});
+
+// show guide after page and JS have loaded
+intro.start();
+
 const closeModalBtn = document.querySelector('.button[name="close"]');
 // invoke a click on the background so the modal is dismissed
-closeModalBtn.addEventListener('click', event => overlay.click());
+closeModalBtn.addEventListener('click', event => {
+  overlay.click();
+  intro.showHints();
+});
 
 const modalRestartBtn = document.querySelector('.button[name="restart"]');
 modalRestartBtn.addEventListener('click', event => {
